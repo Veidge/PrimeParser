@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>wf_market_logo.png</file>
+    <file>search_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>res-icon.qrc</file>
+    <file>res-icon.qrc</file>
+    <file>warf_parser_ic_big_imresizer.png</file>
+    <file>warf_parser_mini_imresizer.png</file>
+    <file>assignment_add_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>warf_parser_imresizer.png</file>
+    <file>delete_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>markdown_paste_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg</file>
+    <file>refresh_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg</file>
+  </qresource>
+</RCC>
