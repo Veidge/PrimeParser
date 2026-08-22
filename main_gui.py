@@ -261,7 +261,7 @@ class Ui_MainWindow(object):
         item.setToolTip(_translate("MainWindow", "ожидаемая цена"))
         item = self.marketTable.horizontalHeaderItem(7)
         item.setText(_translate("MainWindow", "График цен"))
-        self.add_btn.setText(_translate("MainWindow", "Добавить запись"))
+        self.add_btn.setText(_translate("MainWindow", "Сохранить запись"))
         self.delete_btn.setText(_translate("MainWindow", "Удалить запись"))
         self.buy_btn.setText(_translate("MainWindow", "Купить"))
         self.search_btn.setText(_translate("MainWindow", "Поиск"))

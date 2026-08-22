@@ -515,7 +515,7 @@ class TestSaveLoadIntegration:
     """
     Интеграционные тесты цикла записи и чтения данных.
     Все операции выполняются во временных директориях —
-    рабочие settings.json / requests.json проекта не затрагиваются.
+    рабочие settings.json / saved_requests.json проекта не затрагиваются.
     """
 
     def test_settings_roundtrip(self, tmp_path):
@@ -531,15 +531,15 @@ class TestSaveLoadIntegration:
             {"name": "Nidus Prime Set", "type": "sell", "quantity": 1, "wishedPrice": 120},
             {"name": "Saryn Prime Set", "type": "buy",  "quantity": 2, "wishedPrice": 80},
         ]
-        path = tmp_path / "requests.json"
+        path = tmp_path / "saved_requests.json"
         path.write_text(json.dumps(data, ensure_ascii=False, indent=4), encoding="utf-8")
         assert json.loads(path.read_text(encoding="utf-8")) == data
 
     def test_project_files_untouched(self, tmp_path, monkeypatch):
-        """Тесты не создают settings.json / requests.json в рабочей директории."""
+        """Тесты не создают settings.json / saved_requests.json в рабочей директории."""
         monkeypatch.chdir(tmp_path)
         assert not (tmp_path / "settings.json").exists()
-        assert not (tmp_path / "requests.json").exists()
+        assert not (tmp_path / "saved_requests.json").exists()
 
     def test_overwrite_settings_preserves_all_fields(self, tmp_path):
         """Перезапись settings.json сохраняет все поля без потерь."""
@@ -551,7 +551,7 @@ class TestSaveLoadIntegration:
 
     def test_delete_request_persists(self, tmp_path):
         """После удаления и сохранения файл содержит на один элемент меньше."""
-        path = tmp_path / "requests.json"
+        path = tmp_path / "saved_requests.json"
         data = [
             {"name": "Item A", "type": "sell", "quantity": 1, "wishedPrice": 50},
             {"name": "Item B", "type": "buy",  "quantity": 1, "wishedPrice": 30},
@@ -565,7 +565,7 @@ class TestSaveLoadIntegration:
 
     def test_empty_requests_file_loads_without_error(self, tmp_path):
         """Файл с пустым списком [] загружается без ошибок."""
-        path = tmp_path / "requests.json"
+        path = tmp_path / "saved_requests.json"
         path.write_text("[]", encoding="utf-8")
         assert json.loads(path.read_text(encoding="utf-8")) == []
 
