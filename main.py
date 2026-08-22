@@ -1,21 +1,18 @@
 import os.path
 import sys
 from json import JSONDecodeError
-from unittest import result
 
 from PyQt5.QtGui import QCursor, QPixmap, QDesktopServices, QIcon
 
 import functions
-import requests
 import json
 from PyQt5.QtWidgets import QApplication, QComboBox, QPushButton, QTableWidgetItem, QSpinBox, QMainWindow, QLineEdit, \
     QWidget, QVBoxLayout, QLabel, QMessageBox, QDialog, QHBoxLayout
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QTimer, Qt, pyqtSignal, QRect, QUrl
-from main_gui import Ui_MainWindow
-import threading
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from gui.main_gui import Ui_MainWindow
 
-from second_gui import Ui_SettingsWindow
+from gui.second_gui import Ui_SettingsWindow
 
 
 class MainWindow(QMainWindow):
