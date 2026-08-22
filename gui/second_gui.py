@@ -88,7 +88,7 @@ class Ui_SettingsWindow(object):
         self.label.setText(_translate("SettingsWindow", "Ваш Никнейм"))
         self.label_2.setText(_translate("SettingsWindow", "Ваша платформа"))
         self.label_3.setText(_translate("SettingsWindow", "Кроссплатформенность"))
-        self.label_4.setText(_translate("SettingsWindow", "Частота обновления товаров"))
+        self.label_4.setText(_translate("SettingsWindow", "Обновление товаров"))
         self.comboBox.setItemText(0, _translate("SettingsWindow", "ПК"))
         self.comboBox.setItemText(1, _translate("SettingsWindow", "PlayStation"))
         self.comboBox.setItemText(2, _translate("SettingsWindow", "Xbox"))
