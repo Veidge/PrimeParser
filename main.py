@@ -425,7 +425,6 @@ class SettingsWindow(QDialog):
         self.ui = Ui_SettingsWindow()
         self.ui.setupUi(self)
         self.ui.pushButton.clicked.connect(self.save_button_clicked)
-        self.load_settings()
 
         self.ui.comboBox.setItemData(0, "pc")
         self.ui.comboBox.setItemData(1, "ps4")
@@ -435,6 +434,14 @@ class SettingsWindow(QDialog):
 
         self.ui.comboBox_2.setItemData(0, True)
         self.ui.comboBox_2.setItemData(1, False)
+
+        self.ui.comboBox_3.setItemData(0, "1 минута")
+        self.ui.comboBox_3.setItemData(1, "5 минут")
+        self.ui.comboBox_3.setItemData(2, "10 минут")
+        self.ui.comboBox_3.setItemData(3, "30 минут")
+        self.ui.comboBox_3.setItemData(4, "1 час")
+
+        self.load_settings()
 
     def save_button_clicked(self):
         name = self.ui.lineEdit.text()
@@ -482,9 +489,12 @@ class SettingsWindow(QDialog):
                     data["crossplay"])
                 self.ui.comboBox_2.setCurrentIndex(index_crossplay)
 
+                self.ui.comboBox_3.setCurrentText(data["refresh_interval"])
+
         except FileNotFoundError:
             pass
 
+        # по умолчанию
         except JSONDecodeError:
             with open("settings.json", "r+", encoding="utf-8") as f:
                 json.dump({"username": "",
