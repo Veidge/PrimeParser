@@ -6,7 +6,6 @@ from unittest import result
 from PyQt5.QtGui import QCursor, QPixmap, QDesktopServices, QIcon
 
 import functions
-import functions
 import requests
 import json
 from PyQt5.QtWidgets import QApplication, QComboBox, QPushButton, QTableWidgetItem, QSpinBox, QMainWindow, QLineEdit, \
@@ -102,7 +101,7 @@ class MainWindow(QMainWindow):
             "wishedPrice": data["wishedPrice"]
         })
 
-        # with open("requests.json", "w", encoding="UTF-8") as file:
+        # with open("saved_requests.json", "w", encoding="UTF-8") as file:
         #     json.dump(self.requests, file)
 
         if not result:
@@ -261,7 +260,6 @@ class MainWindow(QMainWindow):
 
         with open("settings.json", "r", encoding="utf-8") as f:
             settings = json.load(f)
-            print(settings)
 
         self.ui.lbl_current_name.setText(settings["username"])
 
@@ -287,9 +285,9 @@ class MainWindow(QMainWindow):
         )
 
     def apply_requests(self):
-        if not os.path.exists("requests.json"):
+        if not os.path.exists("saved_requests.json"):
             return
-        with open("requests.json", "r", encoding="UTF-8") as file:
+        with open("saved_requests.json", "r", encoding="UTF-8") as file:
             r = json.load(file)
             for i in r:
                 self.handle_search(i)
@@ -300,17 +298,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Ошибка", "Необходимо выбрать запись")
             return
 
-        # else:
-        #     self.requests.append({
-        #         "name": self.ui.marketTable.item(row, 2).text(),
-        #         "type": self.ui.marketTable.item(row, 3).text(),
-        #         "quantity": int(self.ui.marketTable.item(row, 4).text()),
-        #         "wishedPrice": int(self.ui.marketTable.item(row, 6).text()),
-        #     })
-        #
-        #     print(self.requests)
-
-        with open("requests.json", "w", encoding="UTF-8") as file:
+        with open("saved_requests.json", "w", encoding="UTF-8") as file:
             json.dump(self.requests, file, ensure_ascii=False, indent=4)
             QMessageBox.about(window, "Сообщение",
                               "Ваш заказ успешно сохранён!")
@@ -331,7 +319,7 @@ class MainWindow(QMainWindow):
         if buttons:
             buttons[-1].deleteLater()
 
-        with open("requests.json", "w", encoding="UTF-8") as file:
+        with open("saved_requests.json", "w", encoding="UTF-8") as file:
             json.dump(self.requests, file, indent=4, ensure_ascii=False)
 
         self.ui.marketTable.removeRow(row)

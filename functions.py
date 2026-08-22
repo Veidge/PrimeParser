@@ -127,7 +127,6 @@ def collect_data_parts(name: str, type: str, platform: str, quantity: int = 1, w
     orders = r_json["data"][type]
 
     if not orders:
-        # print("Нет закаZOV")
         return []
 
     for item in orders:
@@ -160,7 +159,7 @@ def collect_data_parts(name: str, type: str, platform: str, quantity: int = 1, w
         # "status": best_order["user"]["status"],
         "date": best_order["updatedAt"]
     }
-    #
+
     # with open('saved_trades.json', 'w', encoding="utf-8") as file:
     #     json.dump(result_item, file, indent=4, ensure_ascii=False)
 
