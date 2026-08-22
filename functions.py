@@ -1,14 +1,10 @@
-import json
 import re
-from threading import Timer
-
 import requests
 from PyQt5.QtGui import QPixmap
 
 
 def message_parser(ingameName: str, quantity: int, name: str, price: int) -> str:
     return f"/w {ingameName} Hi! I want to buy: {quantity} '{name}' for {price} platinum each. (warframe.market)"
-
 
 # функция для преобразования текста (приведёт к нижнему регистру, основные части сетов приведёт к переводимым
 
@@ -169,10 +165,4 @@ def collect_data_parts(name: str, type: str, platform: str, quantity: int = 1, w
 def get_statistics_url(item_url_name: str, lang="ru"):
     return f"https://warframe.market/{lang}/items/{item_url_name}/statistics"
 
-def repeater(interval, function, *args, **kwargs):
-    Timer(interval, repeater, [interval, function, *args], kwargs).start()
-    print(function(*args, **kwargs))
-
 # print(collect_data_parts("атлас прайм сет", "sell", "pc", 1, 80))
-
-# repeater(5, collect_data_parts, "атлас прайм сет", "sell", "pc", 1, 80)

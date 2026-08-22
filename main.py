@@ -1,17 +1,14 @@
 import os.path
 import sys
 from json import JSONDecodeError
-
 from PyQt5.QtGui import QCursor, QPixmap, QDesktopServices, QIcon
-
 import functions
 import json
 from PyQt5.QtWidgets import QApplication, QComboBox, QPushButton, QTableWidgetItem, QSpinBox, QMainWindow, QLineEdit, \
     QWidget, QVBoxLayout, QLabel, QMessageBox, QDialog, QHBoxLayout
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QTimer
 from gui.main_gui import Ui_MainWindow
-
 from gui.second_gui import Ui_SettingsWindow
 
 
@@ -27,6 +24,7 @@ class MainWindow(QMainWindow):
         self.name = "My name"
         self.platform = "pc"
         self.crossplay = True
+        self.refresh_interval = "20 минут"
 
         # self.platform = settings["platform"]
         # self.crossplay = settings["crossplatform"]
@@ -55,6 +53,8 @@ class MainWindow(QMainWindow):
             self.apply_requests()
         except:
             pass
+
+        self.refreshing_requests()
 
     def eventFilter(self, obj, event):
         if obj == self.ui.marketTable.viewport():
@@ -221,7 +221,7 @@ class MainWindow(QMainWindow):
             return
 
         old_requests = self.requests.copy()
-        seacrh_btn_geometry = self.ui.search_btn.geometry()
+        search_btn_geometry = self.ui.search_btn.geometry()
 
         self.ui.marketTable.clearContents()
         self.ui.marketTable.setRowCount(0)
@@ -234,7 +234,7 @@ class MainWindow(QMainWindow):
         for request in old_requests:
             self.handle_search(request)
 
-        self.ui.search_btn.setGeometry(seacrh_btn_geometry)
+        self.ui.search_btn.setGeometry(search_btn_geometry)
 
     def message_text(self, row):
         ingameName = self.ui.marketTable.item(row, 1).text()
@@ -281,6 +281,9 @@ class MainWindow(QMainWindow):
             crossplay_map.get(settings["crossplay"])
         )
 
+        self.refresh_interval = settings["refresh_interval"]
+
+
     def apply_requests(self):
         if not os.path.exists("saved_requests.json"):
             return
@@ -325,6 +328,21 @@ class MainWindow(QMainWindow):
         y_buy_btn = self.ui.search_btn.y() - 55
         self.ui.search_btn.setGeometry(
             QtCore.QRect(1130, y_buy_btn, 111, 38))
+
+    def get_interval_number(self):
+        interval = self.refresh_interval
+        number = int(interval.split()[0])
+
+        if 'час' in interval:
+            return number * 3600
+        else:
+            return number * 60
+
+    def refreshing_requests(self):
+        interval = self.get_interval_number()
+        timer = QTimer(self)
+        timer.timeout.connect(self.refreshing)
+        timer.start(interval * 1000)
 
 
 class SearchWindow(QWidget):
@@ -422,6 +440,7 @@ class SettingsWindow(QDialog):
         name = self.ui.lineEdit.text()
         platform = self.ui.comboBox.currentData()
         crossplay = self.ui.comboBox_2.currentData()
+        refresh_interval = self.ui.comboBox_3.currentText()
 
         msg_box = QMessageBox(self)
         msg_box.setWindowTitle("Подтверждение")
@@ -436,7 +455,8 @@ class SettingsWindow(QDialog):
             data = {
                 "username": name,
                 "platform": platform,
-                "crossplay": crossplay
+                "crossplay": crossplay,
+                "refresh_interval": refresh_interval
             }
 
             with open("settings.json", "w", encoding="utf-8") as f:
