@@ -1,3 +1,4 @@
+![PrimeParserLogo](/icons/warf_parser_mini_imresizer.ico) 
 # PrimeParser
 Приложение для оптимизации анализа торговой площадки и поиска самых выгодных сделок на [warframe.market](https://warframe.market/).
 
