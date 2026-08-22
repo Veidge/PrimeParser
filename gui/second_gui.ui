@@ -27,7 +27,7 @@ color: white;
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>140</y>
+      <y>170</y>
       <width>93</width>
       <height>28</height>
      </rect>
@@ -42,7 +42,7 @@ color: white;
       <x>30</x>
       <y>30</y>
       <width>141</width>
-      <height>81</height>
+      <height>125</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -67,6 +67,13 @@ color: white;
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Частота обновления товаров</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="layoutWidget">
@@ -75,7 +82,7 @@ color: white;
       <x>178</x>
       <y>30</y>
       <width>141</width>
-      <height>82</height>
+      <height>125</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -128,6 +135,37 @@ color: white;
        </item>
       </widget>
      </item>
+
+     <item>
+      <widget class="QComboBox" name="comboBox_3">
+       <item>
+        <property name="text">
+         <string>1 минута</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>5 минут</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>10 минут</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>30 минут</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1 час</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+
     </layout>
    </widget>
   </widget>

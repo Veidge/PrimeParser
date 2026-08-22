@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'second_gui.ui'
+# Form implementation generated from reading ui file 'gui/second_gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -24,10 +24,10 @@ class Ui_SettingsWindow(object):
         self.centralwidget = QtWidgets.QWidget(SettingsWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(200, 140, 93, 28))
+        self.pushButton.setGeometry(QtCore.QRect(200, 170, 93, 28))
         self.pushButton.setObjectName("pushButton")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget.setGeometry(QtCore.QRect(30, 30, 141, 81))
+        self.layoutWidget.setGeometry(QtCore.QRect(30, 30, 141, 125))
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -41,8 +41,11 @@ class Ui_SettingsWindow(object):
         self.label_3 = QtWidgets.QLabel(self.layoutWidget)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
+        self.label_4 = QtWidgets.QLabel(self.layoutWidget)
+        self.label_4.setObjectName("label_4")
+        self.verticalLayout.addWidget(self.label_4)
         self.layoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget1.setGeometry(QtCore.QRect(178, 30, 141, 82))
+        self.layoutWidget1.setGeometry(QtCore.QRect(178, 30, 141, 125))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.layoutWidget1)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -64,7 +67,16 @@ class Ui_SettingsWindow(object):
         self.comboBox_2.addItem("")
         self.comboBox_2.addItem("")
         self.verticalLayout_2.addWidget(self.comboBox_2)
-
+        self.comboBox_3 = QtWidgets.QComboBox(self.layoutWidget1)
+        self.comboBox_3.setObjectName("comboBox_3")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.comboBox_3.addItem("")
+        self.verticalLayout_2.addWidget(self.comboBox_3)
+        self.statusbar = QtWidgets.QStatusBar(SettingsWindow)
+        self.statusbar.setObjectName("statusbar")
 
         self.retranslateUi(SettingsWindow)
         QtCore.QMetaObject.connectSlotsByName(SettingsWindow)
@@ -76,6 +88,7 @@ class Ui_SettingsWindow(object):
         self.label.setText(_translate("SettingsWindow", "Ваш Никнейм"))
         self.label_2.setText(_translate("SettingsWindow", "Ваша платформа"))
         self.label_3.setText(_translate("SettingsWindow", "Кроссплатформенность"))
+        self.label_4.setText(_translate("SettingsWindow", "Частота обновления товаров"))
         self.comboBox.setItemText(0, _translate("SettingsWindow", "ПК"))
         self.comboBox.setItemText(1, _translate("SettingsWindow", "PlayStation"))
         self.comboBox.setItemText(2, _translate("SettingsWindow", "Xbox"))
@@ -83,4 +96,9 @@ class Ui_SettingsWindow(object):
         self.comboBox.setItemText(4, _translate("SettingsWindow", "Мобильные"))
         self.comboBox_2.setItemText(0, _translate("SettingsWindow", "Да"))
         self.comboBox_2.setItemText(1, _translate("SettingsWindow", "Нет"))
+        self.comboBox_3.setItemText(0, _translate("SettingsWindow", "1 минута"))
+        self.comboBox_3.setItemText(1, _translate("SettingsWindow", "5 минут"))
+        self.comboBox_3.setItemText(2, _translate("SettingsWindow", "10 минут"))
+        self.comboBox_3.setItemText(3, _translate("SettingsWindow", "30 минут"))
+        self.comboBox_3.setItemText(4, _translate("SettingsWindow", "1 час"))
 import res_icon_rc
