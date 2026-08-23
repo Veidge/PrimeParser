@@ -63,6 +63,8 @@ pip install -r requirements.txt
 
 ![Главное окно приложения](/screenshots/main_window.png)
 
+![Окно настроек приложения](/screenshots/settings_window.png)
+
 ## Тестирование
 
 Запуск всех тестов:
