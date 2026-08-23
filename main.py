@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
         # self.crossplay = settings["crossplatform"]
 
         self.ui.marketTable.viewport().installEventFilter(self)
+        self.ui.marketTable.cellChanged.connect(self.wished_price_changed)
         # self.ui.buy_btn.clicked.connect(self.message_text())
         self.ui.search_btn.clicked.connect(self.search)
         self.ui.search_btn.setCursor(QCursor(Qt.PointingHandCursor))
@@ -247,7 +248,6 @@ class MainWindow(QMainWindow):
 
         message = f"/w {ingameName} Hi! I want to buy: '{name}' for {price} platinum. (warframe.market)"
         QApplication.clipboard().setText(message)
-        print(f"Сообщение для {ingameName} скопировано")
 
         copy_message = QMessageBox(window)
         copy_message.setWindowTitle("Сообщение")
@@ -347,6 +347,25 @@ class MainWindow(QMainWindow):
         timer = QTimer(self)
         timer.timeout.connect(self.refreshing)
         timer.start(interval * 1000)
+
+    def wished_price_changed(self, row, column):
+        if column != 6:
+            return
+
+        item = self.ui.marketTable.item(row, column)
+
+        if item is None:
+            return
+        try:
+            value = int(item.text())
+            if value < 0:
+                QMessageBox.warning(self, "Ошибка", "Отрицательное число нельзя загрузить")
+                return
+        except ValueError:
+            QMessageBox.warning(self, "Ошибка", "Значение должно быть числом")
+            return
+
+        self.requests[row]['wishedPrice'] = value
 
 
 class SearchWindow(QWidget):
