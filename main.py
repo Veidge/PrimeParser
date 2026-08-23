@@ -160,8 +160,12 @@ class MainWindow(QMainWindow):
                 row, 1, QTableWidgetItem(i["ingameName"]))
             self.ui.marketTable.setItem(
                 row, 2, QTableWidgetItem(i["name"].replace("_", " ").title()))
-            self.ui.marketTable.setItem(
-                row, 3, QTableWidgetItem(i["type"]))
+            if i["type"] == "sell":
+                self.ui.marketTable.setItem(
+                    row, 3, QTableWidgetItem("Покупка"))
+            else:
+                self.ui.marketTable.setItem(
+                    row, 3, QTableWidgetItem("Продажа"))
             self.ui.marketTable.setItem(
                 row, 4, QTableWidgetItem(str(i["quantity"])))
             self.ui.marketTable.setItem(
