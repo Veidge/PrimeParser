@@ -265,7 +265,7 @@ class Ui_MainWindow(object):
         self.delete_btn.setText(_translate("MainWindow", "Удалить запись"))
         self.buy_btn.setText(_translate("MainWindow", "Купить"))
         self.search_btn.setText(_translate("MainWindow", "Поиск"))
-        self.label.setText(_translate("MainWindow", "Инстукция к применению: "))
+        self.label.setText(_translate("MainWindow", "Инструкция к применению: "))
         self.label_2.setText(_translate("MainWindow", "1.  Выберите желаемый предмет на сайте Warframe.market."))
         self.label_3.setText(_translate("MainWindow", "2.  Заполните необходимые пункты, такие как \"Предмет\", \"Тип операции\", \"Количество\", \"Желаемая цена\"."))
         self.label_4.setText(_translate("MainWindow", "3.  Нажмите на кнопку \"Поиск\" справа от записи."))
@@ -273,7 +273,7 @@ class Ui_MainWindow(object):
         self.market_logo_label.setText(_translate("MainWindow", "<a href=\"https://warframe.market/\">\n"
 "    <img src=\":/icons/wf_market_logo.png\">\n"
 "</a>"))
-        self.logo_label.setText(_translate("MainWindow", "<a href=\"https://github.com/Tenebrea/warframe-market-parser.git\">"
+        self.logo_label.setText(_translate("MainWindow", "<a href=\"https://github.com/Veidge/PrimeParser\">"
     "<img src=\":/icons/warf_parser_ic_big_imresizer.png\"/>"
     "</a>"))
         self.settings_btn.setText(_translate("MainWindow", "Настройки"))
@@ -281,4 +281,4 @@ class Ui_MainWindow(object):
         self.lbl_platform.setText(_translate("MainWindow", "Платформа:"))
         self.lbl_crossplat.setText(_translate("MainWindow", "Кроссплатформенность:"))
         self.actionactionSettings.setText(_translate("MainWindow", "actionSettings"))
-import res_icon_rc
+from src import res_icon_rc

@@ -101,4 +101,4 @@ class Ui_SettingsWindow(object):
         self.comboBox_3.setItemText(2, _translate("SettingsWindow", "10 минут"))
         self.comboBox_3.setItemText(3, _translate("SettingsWindow", "30 минут"))
         self.comboBox_3.setItemText(4, _translate("SettingsWindow", "1 час"))
-import res_icon_rc
+from src import res_icon_rc
