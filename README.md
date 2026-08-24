@@ -69,12 +69,12 @@ pip install -r requirements.txt
 
 Запуск всех тестов:
 
-    pytest tests.py -v
+    pytest -v
 
 
 Запуск с покрытием:
 
-    pytest tests.py -v --cov=functions --cov-report=term-missing
+    pytest -v --cov=functions --cov-report=term-missing
 
 ## История разработки
 
