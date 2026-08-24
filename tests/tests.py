@@ -9,9 +9,8 @@ tests.py — Модульные и интеграционные тесты дл�
 """
 
 import json
-import os
 import pytest
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import patch, MagicMock
 
 
 # Глобальные фикстуры
@@ -46,53 +45,53 @@ class TestNormalize:
 
     def test_lowercase_conversion(self):
         """Текст приводится к нижнему регистру."""
-        from functions import normalize
+        from src.functions import normalize
         assert normalize("ASH PRIME SET") == "ash prime set"
 
     def test_synonym_set_to_nabor(self):
         """Синоним 'сет' заменяется на 'набор'."""
-        from functions import normalize
+        from src.functions import normalize
         assert "набор" in normalize("Ash Prime Сет")
 
     def test_synonym_komplekt_to_nabor(self):
         """Синоним 'комплект' заменяется на 'набор'."""
-        from functions import normalize
+        from src.functions import normalize
         assert "набор" in normalize("Ash Prime Комплект")
 
     def test_synonym_bp_to_blueprint(self):
         """Синоним 'bp' заменяется на 'blueprint'."""
-        from functions import normalize
+        from src.functions import normalize
         assert "blueprint" in normalize("Ash Prime BP")
 
     def test_synonym_chertezh_normalized(self):
         """Синоним 'чертеж' заменяется на 'чертёж'."""
-        from functions import normalize
+        from src.functions import normalize
         assert "чертёж" in normalize("Ash Prime Чертеж")
 
     def test_removes_punctuation(self):
         """Знаки препинания удаляются из строки."""
-        from functions import normalize
+        from src.functions import normalize
         result = normalize("Ash, Prime! Set.")
         assert "," not in result and "!" not in result and "." not in result
 
     def test_collapses_multiple_spaces(self):
         """Множественные пробелы схлопываются в один."""
-        from functions import normalize
+        from src.functions import normalize
         assert "  " not in normalize("Ash   Prime  Set")
 
     def test_strips_leading_trailing_spaces(self):
         """Ведущие и замыкающие пробелы убираются."""
-        from functions import normalize
+        from src.functions import normalize
         assert normalize("  ash prime  ") == "ash prime"
 
     def test_empty_string(self):
         """Граничный случай: пустая строка → пустая строка."""
-        from functions import normalize
+        from src.functions import normalize
         assert normalize("") == ""
 
     def test_only_spaces(self):
         """Граничный случай: строка из пробелов → пустая строка."""
-        from functions import normalize
+        from src.functions import normalize
         assert normalize("   ") == ""
 
 
@@ -103,48 +102,48 @@ class TestMessageParser:
 
     def test_correct_full_format(self):
         """Позитивный сценарий: итоговое сообщение полностью совпадает с ожидаемым."""
-        from functions import message_parser
+        from src.functions import message_parser
         result = message_parser("PlayerOne", 1, "Ash Prime Set", 50)
         assert result == "/w PlayerOne Hi! I want to buy: 1 'Ash Prime Set' for 50 platinum each. (warframe.market)"
 
     def test_contains_ingame_name(self):
         """ingameName присутствует в сообщении."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "SomePlayer" in message_parser("SomePlayer", 2, "Item", 10)
 
     def test_contains_item_name(self):
         """Название предмета присутствует в сообщении."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "Riven Mod" in message_parser("P", 1, "Riven Mod", 100)
 
     def test_contains_quantity(self):
         """Количество присутствует в сообщении."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "5" in message_parser("P", 5, "Item", 200)
 
     def test_contains_price(self):
         """Цена в платине присутствует в сообщении."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "999" in message_parser("P", 1, "Item", 999)
 
     def test_zero_price_boundary(self):
         """Граничный случай: цена = 0 не вызывает ошибки."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "0" in message_parser("P", 1, "Item", 0)
 
     def test_large_quantity_boundary(self):
         """Граничный случай: очень большое количество обрабатывается корректно."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert "99999" in message_parser("P", 99999, "Item", 1)
 
     def test_empty_item_name(self):
         """Негативный сценарий: пустое имя предмета — возвращается строка."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert isinstance(message_parser("P", 1, "", 10), str)
 
     def test_returns_string_type(self):
         """Функция всегда возвращает строку."""
-        from functions import message_parser
+        from src.functions import message_parser
         assert isinstance(message_parser("A", 1, "B", 1), str)
 
 
@@ -156,31 +155,31 @@ class TestWarframeToUrl:
     def test_exact_match_returns_slug(self):
         """Точное совпадение нормализованного текста → возвращает slug."""
         with patch.dict("functions.ITEMS_DICT", {"ash prime set": "ash-prime-set"}, clear=True):
-            from functions import warframe_to_url
+            from src.functions import warframe_to_url
             assert warframe_to_url("Ash Prime Set") == "ash-prime-set"
 
     def test_partial_match_returns_slug(self):
         """Частичное вхождение текста в ключ → возвращает slug."""
         with patch.dict("functions.ITEMS_DICT", {"ash prime set": "ash-prime-set"}, clear=True):
-            from functions import warframe_to_url
+            from src.functions import warframe_to_url
             assert warframe_to_url("ash prime") == "ash-prime-set"
 
     def test_no_match_returns_none(self):
         """Нет совпадения → возвращает None."""
         with patch.dict("functions.ITEMS_DICT", {"rhino set": "rhino-set"}, clear=True):
-            from functions import warframe_to_url
+            from src.functions import warframe_to_url
             assert warframe_to_url("НесуществующийПредмет12345") is None
 
     def test_empty_dict_returns_none(self):
         """Граничный случай: пустой ITEMS_DICT → возвращает None."""
         with patch.dict("functions.ITEMS_DICT", {}, clear=True):
-            from functions import warframe_to_url
+            from src.functions import warframe_to_url
             assert warframe_to_url("Ash Prime Set") is None
 
     def test_normalizes_input_before_lookup(self):
         """Вход нормализуется перед поиском (регистр, синонимы)."""
         with patch.dict("functions.ITEMS_DICT", {"ash prime набор": "ash-prime-set"}, clear=True):
-            from functions import warframe_to_url
+            from src.functions import warframe_to_url
             assert warframe_to_url("ASH PRIME СЕТ") == "ash-prime-set"
 
 
@@ -196,7 +195,7 @@ class TestBuildSlugDict:
             "data": [{"slug": "ash-prime-set", "i18n": {"en": {"name": "Ash Prime Set"}}}]
         }
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             result = build_slug_dict()
         assert isinstance(result, dict) and len(result) > 0
 
@@ -207,7 +206,7 @@ class TestBuildSlugDict:
             "data": [{"slug": "rhino-prime-set", "i18n": {"en": {"name": "Rhino Prime Set"}}}]
         }
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             assert "rhino-prime-set" in build_slug_dict().values()
 
     def test_multiple_languages_all_added(self):
@@ -220,7 +219,7 @@ class TestBuildSlugDict:
             }}]
         }
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             assert len(build_slug_dict()) == 2
 
     def test_empty_data_returns_empty_dict(self):
@@ -228,14 +227,14 @@ class TestBuildSlugDict:
         mock_response = MagicMock()
         mock_response.json.return_value = {"data": []}
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             assert build_slug_dict() == {}
 
     def test_api_connection_error_raises(self):
         """Негативный сценарий: сетевая ошибка пробрасывается наружу."""
         import requests as req
         with patch("functions.requests.get", side_effect=req.exceptions.ConnectionError):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             with pytest.raises(req.exceptions.ConnectionError):
                 build_slug_dict()
 
@@ -246,7 +245,7 @@ class TestBuildSlugDict:
             "data": [{"slug": "x", "i18n": {"en": {"name": "UPPERCASE NAME"}}}]
         }
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import build_slug_dict
+            from src.functions import build_slug_dict
             assert all(k == k.lower() for k in build_slug_dict())
 
 
@@ -264,14 +263,14 @@ class TestGetApiIcon:
         """Позитивный сценарий: возвращает корректный URL иконки."""
         with patch("functions.warframe_to_url", return_value="ash-prime-set"), \
              patch("functions.requests.get", return_value=self._icon_mock(thumb="items/thumb.png")):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             result = get_api_icon("Ash Prime Set")
         assert result and result.startswith("https://warframe.market/static/assets/")
 
     def test_returns_none_when_item_not_found(self):
         """warframe_to_url → None → без запроса к API, возвращает None."""
         with patch("functions.warframe_to_url", return_value=None):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             assert get_api_icon("НесуществующийПредмет") is None
 
     def test_returns_none_when_no_data_field(self):
@@ -280,7 +279,7 @@ class TestGetApiIcon:
         m.json.return_value = {}
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=m):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             assert get_api_icon("item") is None
 
     def test_returns_none_when_no_i18n_en(self):
@@ -289,21 +288,21 @@ class TestGetApiIcon:
         m.json.return_value = {"data": {"i18n": {}}}
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=m):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             assert get_api_icon("item") is None
 
     def test_returns_none_when_no_thumb_and_no_icon(self):
         """И thumb, и icon отсутствуют → None."""
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=self._icon_mock()):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             assert get_api_icon("item") is None
 
     def test_uses_icon_as_fallback_when_no_thumb(self):
         """Поле icon используется как запасное при отсутствии thumb."""
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=self._icon_mock(icon="items/icon.png")):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             result = get_api_icon("item")
         assert result and "icon.png" in result
 
@@ -311,7 +310,7 @@ class TestGetApiIcon:
         """Ведущий '/' в пути иконки не дублирует слеш в URL."""
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=self._icon_mock(thumb="/items/t.png")):
-            from functions import get_api_icon
+            from src.functions import get_api_icon
             result = get_api_icon("item")
         assert "//" not in result.replace("https://", "")
 
@@ -327,7 +326,7 @@ class TestDownloadIconBytes:
         mock_response.content = b"\x89PNG\r\n"
         mock_response.raise_for_status = MagicMock()
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import download_icon_bytes
+            from src.functions import download_icon_bytes
             assert download_icon_bytes("https://example.com/img.png") == b"\x89PNG\r\n"
 
     def test_raises_on_http_error(self):
@@ -336,7 +335,7 @@ class TestDownloadIconBytes:
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = req.exceptions.HTTPError("404")
         with patch("functions.requests.get", return_value=mock_response):
-            from functions import download_icon_bytes
+            from src.functions import download_icon_bytes
             with pytest.raises(req.exceptions.HTTPError):
                 download_icon_bytes("https://example.com/notfound.png")
 
@@ -346,7 +345,7 @@ class TestDownloadIconBytes:
         mock_response.raise_for_status = MagicMock()
         mock_response.content = b""
         with patch("functions.requests.get", return_value=mock_response) as mock_get:
-            from functions import download_icon_bytes
+            from src.functions import download_icon_bytes
             download_icon_bytes("https://example.com/img.png")
         mock_get.assert_called_once_with("https://example.com/img.png", timeout=5)
 
@@ -354,7 +353,7 @@ class TestDownloadIconBytes:
         """Негативный сценарий: сетевая ошибка пробрасывается наружу."""
         import requests as req
         with patch("functions.requests.get", side_effect=req.exceptions.ConnectionError):
-            from functions import download_icon_bytes
+            from src.functions import download_icon_bytes
             with pytest.raises(req.exceptions.ConnectionError):
                 download_icon_bytes("https://example.com/img.png")
 
@@ -376,7 +375,7 @@ class TestBytesToImage:
         mock_pixmap_instance = MagicMock()
 
         with patch("functions.QPixmap", return_value=mock_pixmap_instance) as mock_pixmap_cls:
-            from functions import bytes_to_image
+            from src.functions import bytes_to_image
             result = bytes_to_image(png_bytes)
 
         mock_pixmap_cls.assert_called_once()
@@ -388,7 +387,7 @@ class TestBytesToImage:
         mock_pixmap_instance = MagicMock()
 
         with patch("functions.QPixmap", return_value=mock_pixmap_instance):
-            from functions import bytes_to_image
+            from src.functions import bytes_to_image
             result = bytes_to_image(b"")
 
         mock_pixmap_instance.loadFromData.assert_called_once_with(b"")
@@ -405,7 +404,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="ash-prime-set"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order()])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             result = collect_data_parts("Ash Prime Set", "sell", "pc", 1)
         assert isinstance(result, list) and len(result) == 1
 
@@ -414,7 +413,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="ash-prime-set"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order()])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             order = collect_data_parts("Ash Prime Set", "sell", "pc", 1)[0]
         for key in ("ingameName", "name", "type", "quantity", "price", "date"):
             assert key in order
@@ -422,14 +421,14 @@ class TestCollectDataParts:
     def test_returns_none_when_item_not_found(self):
         """warframe_to_url → None → функция возвращает None."""
         with patch("functions.warframe_to_url", return_value=None):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert collect_data_parts("НесуществующийПредмет", "sell", "pc") is None
 
     def test_returns_empty_list_when_no_orders(self):
         """Нет заказов в ответе API → пустой список."""
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(sell=[])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert collect_data_parts("item", "sell", "pc") == []
 
     def test_skips_offline_users(self):
@@ -437,7 +436,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order(status="offline")])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert not collect_data_parts("item", "sell", "pc")
 
     def test_skips_non_ingame_status(self):
@@ -445,7 +444,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order(status="online")])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert not collect_data_parts("item", "sell", "pc")
 
     def test_quantity_filter_skips_small_order(self):
@@ -453,7 +452,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order(quantity=2)])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert not collect_data_parts("item", "sell", "pc", quantity=10)
 
     def test_quantity_one_not_filtered(self):
@@ -461,7 +460,7 @@ class TestCollectDataParts:
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(
                  sell=[_ingame_order(quantity=1)])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             result = collect_data_parts("item", "sell", "pc", quantity=5)
         assert result and len(result) == 1
 
@@ -470,7 +469,7 @@ class TestCollectDataParts:
         order = _ingame_order(crossplay=False, platform="pc")
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(sell=[order])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             result = collect_data_parts("item", "sell", "pc", crossplay=False)
         assert result and len(result) == 1
 
@@ -479,7 +478,7 @@ class TestCollectDataParts:
         order = _ingame_order(crossplay=False, platform="ps4")
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(sell=[order])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert not collect_data_parts("item", "sell", "pc", crossplay=False)
 
     def test_crossplay_mismatch_skips_order(self):
@@ -487,7 +486,7 @@ class TestCollectDataParts:
         order = _ingame_order(crossplay=False)
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(sell=[order])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert not collect_data_parts("item", "sell", "pc", crossplay=True)
 
     def test_buy_type_uses_buy_orders(self):
@@ -495,7 +494,7 @@ class TestCollectDataParts:
         order = _ingame_order()
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(buy=[order])):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             result = collect_data_parts("item", "buy", "pc")
         assert result and result[0]["type"] == "buy"
 
@@ -504,7 +503,7 @@ class TestCollectDataParts:
         orders = [_ingame_order(status="offline"), _ingame_order(status="online")]
         with patch("functions.warframe_to_url", return_value="item"), \
              patch("functions.requests.get", return_value=_make_orders_response(sell=orders)):
-            from functions import collect_data_parts
+            from src.functions import collect_data_parts
             assert collect_data_parts("item", "sell", "pc") is None
 
 

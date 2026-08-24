@@ -3,6 +3,6 @@ venv
 __pycache__
 file.json
 .pytest_cache
-saved_requests.json
-settings.json
+data/saved_requests.json
+data/settings.json
 .coverage

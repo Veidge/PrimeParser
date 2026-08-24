@@ -2,7 +2,7 @@ import os.path
 import sys
 from json import JSONDecodeError
 from PyQt5.QtGui import QCursor, QPixmap, QDesktopServices, QIcon
-import functions
+from src import functions
 import json
 from PyQt5.QtWidgets import QApplication, QComboBox, QPushButton, QTableWidgetItem, QSpinBox, QMainWindow, QLineEdit, \
     QWidget, QVBoxLayout, QLabel, QMessageBox, QDialog, QHBoxLayout
@@ -256,10 +256,10 @@ class MainWindow(QMainWindow):
         copy_message.exec_()
 
     def apply_settings(self):
-        if not os.path.exists("settings.json"):
+        if not os.path.exists("../data/settings.json"):
             return
 
-        with open("settings.json", "r", encoding="utf-8") as f:
+        with open("../data/settings.json", "r", encoding="utf-8") as f:
             settings = json.load(f)
 
         self.ui.lbl_current_name.setText(settings["username"])
@@ -289,9 +289,9 @@ class MainWindow(QMainWindow):
 
 
     def apply_requests(self):
-        if not os.path.exists("saved_requests.json"):
+        if not os.path.exists("../data/saved_requests.json"):
             return
-        with open("saved_requests.json", "r", encoding="UTF-8") as file:
+        with open("../data/saved_requests.json", "r", encoding="UTF-8") as file:
             r = json.load(file)
             for i in r:
                 self.handle_search(i)
@@ -302,7 +302,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, "Ошибка", "Необходимо выбрать запись")
             return
 
-        with open("saved_requests.json", "w", encoding="UTF-8") as file:
+        with open("../data/saved_requests.json", "w", encoding="UTF-8") as file:
             json.dump(self.requests, file, ensure_ascii=False, indent=4)
             QMessageBox.about(window, "Сообщение",
                               "Ваш заказ успешно сохранён!")
@@ -323,7 +323,7 @@ class MainWindow(QMainWindow):
         if buttons:
             buttons[-1].deleteLater()
 
-        with open("saved_requests.json", "w", encoding="UTF-8") as file:
+        with open("../data/saved_requests.json", "w", encoding="UTF-8") as file:
             json.dump(self.requests, file, indent=4, ensure_ascii=False)
 
         self.ui.marketTable.removeRow(row)
@@ -489,7 +489,7 @@ class SettingsWindow(QDialog):
                 "refresh_interval": refresh_interval
             }
 
-            with open("settings.json", "w", encoding="utf-8") as f:
+            with open("../data/settings.json", "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=4, ensure_ascii=False)
                 window.name = data["username"]
                 window.platform = data["platform"]
@@ -500,7 +500,7 @@ class SettingsWindow(QDialog):
 
     def load_settings(self):
         try:
-            with open("settings.json", "r+", encoding="utf-8") as f:
+            with open("../data/settings.json", "r+", encoding="utf-8") as f:
                 data = json.load(f)
 
                 self.ui.lineEdit.setText(data["username"])
@@ -519,7 +519,7 @@ class SettingsWindow(QDialog):
 
         # по умолчанию
         except JSONDecodeError:
-            with open("settings.json", "r+", encoding="utf-8") as f:
+            with open("../data/settings.json", "r+", encoding="utf-8") as f:
                 json.dump({"username": "",
                            "platform": "pc",
                            "crossplay": True}, f)
